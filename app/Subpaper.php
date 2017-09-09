@@ -12,4 +12,9 @@ class Subpaper extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public function topic()
+    {
+        return $this->hasOne(Topic::class,'id','topic_id');
+    }
 }

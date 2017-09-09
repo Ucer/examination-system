@@ -24,4 +24,6 @@ class TopicRepository
     {
         return $this->model->where('type', $type)->inRandomOrder()->limit($limit)->select('id')->get()->toArray();
     }
+
+
 }

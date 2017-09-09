@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="row head">
-    <div class="col-xs-12 ph10 hh">
+    <div class="col-xs-10 ph10 hh">
         <h3 class="fl mh0"><a href="{{ route('home') }}">考试系统</a></h3>
         <ul class="nav nav-pills ml40 fl" role="tablist" id="nav_top">
             <li role="presentation" @if(request()->url() == route('dashboard'))class="active" @endif><a href="{{ route('dashboard') }}">试题库</a></li>

@@ -14,4 +14,9 @@ class SubpaperRepository
     {
         $this->model = $model;
     }
-}
+
+
+    public function getPaperId($paper_id)
+    {
+        return $this->model->where('paper_id', $paper_id)->with('topic')->get();
+    }}

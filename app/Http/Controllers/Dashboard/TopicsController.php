@@ -135,4 +135,23 @@ class TopicsController extends Controller
 
         return redirect()->route('dashboard.paper');
     }
+
+    public function showP($id)
+    {
+        $info = $this->paperRepository->getById($id);
+
+        $all_topic =  $this->subpaperRepository->getPaperId($id);
+
+        $list = [];
+
+        $i = 0;
+        foreach ($all_topic as $k=>$v) {
+            $i +=1;
+            $v->topic->order = $i;
+            $v->topic->options = getSelect($v->topic_id);;
+            $list[$v->topic->type][] = $v;
+        }
+
+        return view('dashboard.papers.show', compact('info', 'list','i'));
+    }
 }

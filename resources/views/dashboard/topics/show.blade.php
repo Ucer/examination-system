@@ -63,7 +63,7 @@
                     @endforeach
                     <hr class="dash">
                     <p>
-                        @foreach($list as $v)
+                    @foreach($list as $v)
                         <label class="radio-inline">
                             <input type="radio" name="answer" value="1"> {{ $v->name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </label>
