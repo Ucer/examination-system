@@ -1,0 +1,92 @@
+body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}
+
+/*html,body{width:100%;height:100%;}*/
+
+.container{position:relative;}
+.container.mt-15 .row{margin-top:15px;}
+
+
+/*.frame_left{height:100%;}*/
+.head{border-bottom:solid 1px #ccc;height:60px;}
+.head h3{color: #498b67;}
+.nav>li>a {padding: 5px 15px;}
+
+
+.search_list dl{margin-bottom:10px;}
+.search_list dt{cursor:pointer;}
+.search_list dd a{display:inline-block;padding:5px;}
+.search_list dl dt span{cursor:pointer;margin-top:5px;display:block;width:0;height:0;border:solid 6px #fff;float:left;border-left:solid 6px #001b12;}
+.search_list dl dt span.sjb{border:solid 6px #fff;float:left;border-top:solid 6px #001b12;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.co-green{color: #007902;font-weight:bold;}
+.co-gray{background:#eee !important;}
+
+.ma-t15{margin-top:15px;}
+.ma-l10{margin-left:10px;}
+.ma-l15{margin-left:15px;}
+.ma-l20{margin-left:20px;}
+.ma-r10{margin-right:10px;}
+.ma-r15{margin-right:15px;}
+.ma-r20{margin-right:20px;}
+
+.ma-l_15{padding-left:-15px !important;}
+.dash{border-top-style:dashed;}
+.close1{top:0px;position:absolute;right:0;font-size:20px;color:#ccc;top:18px;font-weight:bold;cursor:pointer;}
+
+/*显示方式*/
+.dis_n{display:none;}
+.dis_il{display:inline-block}
+
+/*左右浮动*/
+.fl{float:left;}
+.fr{float:right;}
+
+.hh{height:100%;}
+.ww{width:100%;}
+
+/*添加边框*/
+.bl{border-left:solid 1px #ccc}
+.bb{border-bottom:solid 1px #ccc}
+.br{border-right:solid 1px #ccc}
+.bt{border-top:solid 1px #ccc}
+.bd{border:solid 1px #ccc}
+
+/*
+!*右三角*!
+.sjr{display:block;width:0;height:0;border:solid 6px #fff;float:left;border-left:solid 6px #001b12;}
+!*下三角*!
+.sjb{display:block;width:0;height:0;border:solid 6px #fff;float:left;border-top:solid 6px #001b12;}
+!*上三角*!
+.sjt{display:block;width:0;height:0;border:solid 6px #fff;float:left;border-bottom:solid 6px #001b12;}
+!*左三角*!
+.sjl{display:block;width:0;height:0;border:solid 6px #fff;float:left;border-right:solid 6px #001b12;}*/
+
+
+.fz9{font-size:9px;}
+.fz10{font-size:10px;}
+.fz11{font-size:11px;}
+.fz12{font-size:12px;}
+.fz13{font-size:13px;}
+.fz14{font-size:14px;}
+.fz15{font-size:15px;}
+.fz16{font-size:16px;}
+.fz17{font-size:17px;}
+.fz18{font-size:18px;}
+.fz19{font-size:19px;}
+.fz20{font-size:20px;}
+.fz25{font-size:25px;}
+.fz30{font-size:30px;}
+.fz35{font-size:35px;}
+.fz40{font-size:40px;}

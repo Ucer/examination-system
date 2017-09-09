@@ -15,12 +15,13 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('real_name');
+            $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('is_admin', ['yes','no'])->default('no')->index()->comment('是否为后台管理员：no 否，yes 是');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
