@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'middleware' => ['auth']], function () {
-    Route::get('/', 'IndexController@index')->name('dashboard');
+    Route::get('/', 'TopicsController@index')->name('dashboard');
     Route::get('topic/create', 'TopicsController@create')->name('topic.c');
     Route::post('topic/store', 'TopicsController@store')->name('topic.s');
     Route::get('topic/{id}/edit', 'TopicsController@edit')->name('topic.e');

@@ -15,75 +15,32 @@
                         <th></th>
                         <th>题干</th>
                         <th>题型</th>
+                        <th>正确答案</th>
                         <th>最后更新日期</th>
                         <th style="width:200px;">操作</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @forelse($list as $v)
                     <tr>
                         <td><input type="checkbox"></td>
-                        <td>这里是题干</td>
-                        <td>这里是题型</td>
-                        <td>2016-08-16</td>
-                        <td><a href="#" class="btn btn-default">修改</a><a href="#" class="btn btn-default">修改</a><a
-                                    href="#" class="btn btn-default">修改</a></td>
+                        <td>{!! $v->name !!}</td>
+                        <td>{{ $v->type }}</td>
+                        <td>{!! $v->answer !!}</td>
+                        <td>{{ $v->updated_at }}</td>
+                        <td><a href="" class="btn btn-default">试题预览</a></td>
                     </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>这里是题干</td>
-                        <td>这里是题型</td>
-                        <td>2016-08-16</td>
-                        <td><a href="#" class="btn btn-default">修改</a><a href="#" class="btn btn-default">修改</a><a
-                                    href="#" class="btn btn-default">修改</a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>这里是题干</td>
-                        <td>这里是题型</td>
-                        <td>2016-08-16</td>
-                        <td><a href="#" class="btn btn-default">修改</a><a href="#" class="btn btn-default">修改</a><a
-                                    href="#" class="btn btn-default">修改</a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>这里是题干</td>
-                        <td>这里是题型</td>
-                        <td>2016-08-16</td>
-                        <td><a href="#" class="btn btn-default">修改</a><a href="#" class="btn btn-default">修改</a><a
-                                    href="#" class="btn btn-default">修改</a></td>
-                    </tr>
+                    @empty
+                        <div class="ui feed no-messages">
+                            <a class="text-center alert alert-info">!
+                                (=￣ω￣=) ··· 还没有数据噢。
+                            </a>
+                        </div>
+                        @endforelse
                     </tbody>
                 </table>
                 <div class="row">
-                    <div class="col-xs-2 mh20">
 
-                        <div class="input-group">
-
-                            <span class="input-group-addon">每页显示</span>
-                            <select name="" id="" class="form-control">
-                                <option value="0">20</option>
-                                <option value="0">10</option>
-                                <option value="0">20</option>
-                                <option value="0">30</option>
-                            </select>
-                            <span class="input-group-addon">条</span>
-
-                        </div>
-                    </div>
-
-                    <div class="col-xs-10">
-                        <nav class="pull-right">
-                            <ul class="pagination">
-                                <li><a href="#">&laquo;</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
-                        </nav>
-                    </div>
                 </div>
             </div>
             <script>

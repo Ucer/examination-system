@@ -19,6 +19,7 @@ class CreateTopicsTable extends Migration
             $table->string('type')->index()->comment('radio,multiselect,select(不定向),field,judge,ask,materail');
             $table->integer('user_id')->unsigned()->default(0)->index();
             $table->tinyInteger('level')->default(0)->index()->comment('0简单，1一般，2困难');
+            $table->integer('value')->unsigned()->default(0);
             $table->text('answer')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
