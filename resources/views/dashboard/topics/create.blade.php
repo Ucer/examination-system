@@ -53,7 +53,7 @@
                 <label class="pull-right" for="name">题干</label>
             </div>
             <div class="col-xs-10">
-                <textarea style="height:200px;" name="name" id="myEditor" placeholder="这里写你的初始化内容" required></textarea>
+                <textarea style="height:200px;" name="name" id="myEditor" placeholder="这里写你的初始化内容" required>今年是[]年</textarea>
             </div>
         </div>
         <div class="row ma-t15 select-option">

@@ -13,25 +13,17 @@
 </head>
 <body>
 <div class="row head">
-    <div class="col-xs-12 ph10 hh">
+    <div class="col-xs-10 ph10 hh">
         <h3 class="fl mh0"><a href="{{ route('home') }}">考试系统</a></h3>
         <ul class="nav nav-pills ml40 fl" role="tablist" id="nav_top">
-            <li role="presentation" class="active"><a href="{{ route('dashboard') }}">试题库</a></li>
-            <li role="presentation"><a href="#">试卷库</a></li>
-            <li role="presentation"><a href="#">答卷列表</a></li>
+            <li role="presentation" @if(request()->url() == route('dashboard'))class="active" @endif><a href="{{ route('dashboard') }}">试题库</a></li>
+            <li role="presentation" @if(request()->url() == route('dashboard.paper'))class="active" @endif><a href="{{ route('dashboard.paper') }}">试卷库</a></li>
+            <li role="presentation" @if(request()->url() == 'sdf')class="active" @endif><a href="#">答卷列表</a></li>
         </ul>
         <div class="fr">
             <div class="btn-group fl">
                 <a href="{{ route('topic.c') }}" class="btn btn-success">新增试题</a>
-                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
+                <a href="{{ route('paper.c') }}" class="btn btn-info">新增试卷</a>
             </div>
 
             <div id="search_top" style="width:300px;display:none;" class="fl ml20">
