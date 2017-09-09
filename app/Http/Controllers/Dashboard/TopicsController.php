@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Repositories\PaperRepository;
 use App\Repositories\StopicRepository;
 use App\Repositories\TopicRepository;
 use Illuminate\Http\Request;
@@ -12,16 +13,25 @@ class TopicsController extends Controller
 {
     protected $topicRepository;
     protected $stopicRepository;
+    protected $paperRepository;
 
-    public function __construct(TopicRepository $topicRepository, StopicRepository $stopicRepository)
+    public function __construct(TopicRepository $topicRepository, StopicRepository $stopicRepository, PaperRepository $paperRepository)
     {
         $this->topicRepository = $topicRepository;
         $this->stopicRepository = $stopicRepository;
+        $this->paperRepository = $paperRepository;
     }
     public function index()
     {
         $list = $this->topicRepository->getAllData('*', false);
         return view('dashboard.index', compact('list'));
+    }
+
+    public function show($id)
+    {
+        $info = $this->topicRepository->getById($id);
+        $list = getSelect($id);
+        return view('dashboard.topics.show', compact('info','list'));
     }
 
     public function create()
@@ -49,5 +59,15 @@ class TopicsController extends Controller
         }
         return redirect()->route('dashboard');
 
+    }
+
+    public function paper()
+    {
+        $list = $this->paperRepository->getAllData('*', false);
+        return view('dashboard.paper', compact('list'));
+    }
+    public function createP()
+    {
+        return view('dashboard.papers.create');
     }
 }
