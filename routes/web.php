@@ -30,5 +30,6 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'middleware' 
 
     Route::get('/paper', 'TopicsController@paper')->name('dashboard.paper');
     Route::get('paper/create', 'TopicsController@createP')->name('paper.c');
+    Route::post('paper/store', 'TopicsController@storeP')->name('paper.s');
     Route::get('paper/{id}/show', 'TopicsController@showP')->name('paper.sh');
 });

@@ -26,19 +26,19 @@
                     <tr>
                         <td><input type="checkbox"></td>
                         <td>{!! $v->name !!}</td>
-                        <td>{{ $v->type }}</td>
                         <td>
-                            @if($v->level === 1)
-                                一般
-                                @elseif($v->level == 2)
-                                困难
+                            @if($v->status === 1)
+                                <i class="btn-success">已发布</i>
                                 @else
-                                简单
+                                <i class="btn-error">未发布</i>
                             @endif
                         </td>
-                        <td>{!! $v->answer !!}</td>
+                        <td>
+                           {{ $v->topic_count }} 题&nbsp;/&nbsp;{{ $v->value_count }}分
+                        </td>
+                        <td>{{ $v->limit_time }} 分钟</td>
                         <td>{{ $v->updated_at }}</td>
-                        <td><a href="{{ route('topic.sh', ['id' => $v->id]) }}" class="btn btn-default">试题预览</a></td>
+                        <td><a href="{{ route('paper.sh', ['id' => $v->id]) }}" class="btn btn-default">试卷预览</a></td>
                     </tr>
                     @empty
                         <tr>

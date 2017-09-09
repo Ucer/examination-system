@@ -22,6 +22,8 @@ class CreatePapersTable extends Migration
             $table->integer('percentag1')->unsigned()->default(0)->index()->comment('一般题目比');
             $table->integer('percentag2')->unsigned()->default(0)->index()->comment('困难题目比');
             $table->integer('limit_time')->unsigned()->default(0)->index()->comment('单位-分钟');
+            $table->integer('topic_count')->default(0);
+            $table->integer('value_count')->default(0);
             $table->tinyInteger('generate_type')->default(0)->index()->comment('0随机，1难易');
             $table->tinyInteger('status')->default(0)->index()->comment('0未发布，1已发布');
             $table->timestamps();
