@@ -25,7 +25,7 @@
                     @forelse($list as $v)
                     <tr>
                         <td><input type="checkbox"></td>
-                        <td>{!! $v->name !!}</td>
+                        <td>{!! str_limit($v->name, 30) !!}</td>
                         <td>{{ $v->type }}</td>
                         <td>
                             @if($v->level === 1)
@@ -36,7 +36,7 @@
                                 简单
                             @endif
                         </td>
-                        <td>{!! $v->answer !!}</td>
+                        <td>{!! str_limit($v->answer,60) !!}</td>
                         <td>{{ $v->updated_at }}</td>
                         <td><a href="{{ route('topic.sh', ['id' => $v->id]) }}" class="btn btn-default">试题预览</a></td>
                     </tr>
