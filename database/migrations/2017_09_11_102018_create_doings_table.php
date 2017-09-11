@@ -19,7 +19,7 @@ class CreateDoingsTable extends Migration
             $table->integer('paper_id')->index();
             $table->tinyInteger('status')->default(0)->index()->comment('0考试中，1暂停 ，2已交卷, 3已完成[阅卷完成]');
             $table->integer('oprated_at')->default(0)->index()->comment('考生最后一次操作时间,时间戳类型');
-            $table->integer('surplus_time')->default(0)->index()->comment('剩余时间');
+            $table->integer('surplus_time')->default(0)->index()->comment('剩余时间,时间戳类型');
             $table->timestamps();
         });
     }

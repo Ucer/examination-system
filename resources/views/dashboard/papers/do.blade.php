@@ -24,11 +24,13 @@
 
         <div class="row" data-spy="scroll" data-target="#listbar" data-offset="0">
 
-            <form action="{{ route('paper.stop',['id'=>$info->id, 'type' => 'end']) }}" method="post">
+            <form action="{{ route('paper.stop') }}" method="post" id="opPaper">
             <div class="col-xs-9 pr15" data-spy="scroll" data-target="#toolbar" data-offset="0"
                  style="height:750px;overflow:auto;">
                     {{ csrf_field() }}
                 <input type="hidden" name="doing_id" value="{{ $doInfo->id }}" >
+                <input type="hidden" name="type" value="end" >
+                <input type="hidden" name="id" value="{{ $info->id }}" >
                     <div class="row mr0">
                         <div class="panel panel-default">
                             <div class="panel-heading" id="radio"><strong>一、单项选择题</strong></div>
@@ -276,10 +278,15 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a class="btn"><span style="color:black">考试倒计时：</span> <span id="countdown_time"></span></a>
                             <ul>
-                                <a class="btn btn-now">暂停</a>
-                                <a class="btn btn-next">下次再做</a>
+                                    @if($doInfo->status ==0)
+                                    <a class="btn"><span style="color:black">考试倒计时：</span> <span id="countdown_time"></span></a>
+                                    <a class="btn btn-now" id="stop" onclick="stop('stop')"> 暂停</a>
+                                    @elseif($doInfo->status === 1)
+                                    <a class="btn"><span style="color:black">考试倒计时：</span>{{ floor($doInfo->surplus_time) }}</a>
+                                    <a class="btn btn-now" id="stop" onclick="stop('continue')"> 继续</a>
+                                    @endif
+                                {{--<a class="btn btn-next">下次再做</a>--}}
                             </ul>
                         </div>
                         <div class="panel-body">
@@ -327,7 +334,7 @@
                             </dl>
                         </div>
                         <div class="panel-footer">
-                            <input type="submit" class="btn btn-success form-control" value="我要交卷">
+                            <input type="submit" id="subBtn" class="btn btn-success form-control" value="我要交卷">
                         </div>
                     </div>
                 </div>
@@ -337,12 +344,17 @@
     </div>
     @section('scripts')
         <script>
+            function stop(status){
+                var type = $("input[name=type]");
+                type.val(status);
+                $("#opPaper").submit();
+            }
             $(function() {
                 //设置时间倒计时
                 setCountDown_time();
             });
             /*时间倒计时*/
-            var sec = 60,min = '{{ $info->limit_time -1 }}';
+            var sec = 60,min = '{{ floor($doInfo->surplus_time/60)-1}}';
             var format = function(str) {
                 if(parseInt(str) < 10) {
                     return "0" + str;
@@ -356,7 +368,7 @@
                 sec--;
                 if(sec == 0) {
                     min--;
-                    sec = 59;
+                    sec = 0;
                 }
                 document.getElementById("countdown_time").innerHTML = format(min) + ":" + format(sec);
                 if(parseInt(min) == 0 && parseInt(sec) == 0) {

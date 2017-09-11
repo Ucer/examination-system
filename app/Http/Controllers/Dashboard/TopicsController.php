@@ -175,7 +175,7 @@ class TopicsController extends Controller
     public function doPaper($id)
     {
         $did = DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $id)->count();
-        $is_end = DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $id)->where('status', 2)->count();
+        $is_end = DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $id)->where('status', '>', 1)->count();
         if ($is_end > 0) {
             return redirect()->back()->with('error', '您已经交卷了');
         }
@@ -194,29 +194,65 @@ class TopicsController extends Controller
             $v->topic->options = getSelect($v->topic_id);;
             $list[$v->topic->type][] = $v;
         }
+
+        $time = time();
         if ($did < 1) { // 第一次点击开始做题，数据入库
-            $this->doingRepository->store(['paper_id' => $id, 'user_id' => Auth::user()->id]);
+            $this->doingRepository->store(['paper_id' => $id, 'user_id' => Auth::user()->id, 'oprated_at' => $time, 'surplus_time' => ($info->limit_time) * 60]);
         }
 
         $doInfo = DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $id)->first(); // 学生开始做这个试卷
 
+        if ($doInfo->status < 1) { //如果是考试中状态
+            $surplus_time = $doInfo->surplus_time - ($time - $doInfo->oprated_at);
+            $this->needAutoComplete($id,'continue',$time,$surplus_time);
+            if ($surplus_time <= 0) {
+                $this->needAutoComplete($id,'end',$time,1);
+                return redirect()->back()->with('error', '已经到到交卷时间了，系统已经自动交卷');
+            }
+//            else { //更新一下剩余时间
+//                $doInfo = DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $id)->update(['oprated_at' => $time, 'surplus_time' => $time - $do->oprated_at]); // 学生开始做这个试卷
+//            }
+        }
 
         return view('dashboard.papers.do', compact('info', 'list', 'i', 'doInfo'));
+    }
+
+    //
+
+    /**
+     * @param $paper_id
+     * @param string $type
+     * @param int $oprated_at
+     * @param int $surplus_time
+     */
+    protected function needAutoComplete($paper_id, $type = 'end', $oprated_at = 0, $surplus_time = 1)
+    {
+        if ($type == 'end') { // 交卷
+            DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $paper_id)->update(['status' => 2, 'oprated_at' => $oprated_at, 'surplus_time' => $surplus_time]); // 自动交卷
+        } elseif($type == 'continue') {
+            DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $paper_id)->update(['status' => 0, 'oprated_at' => $oprated_at, 'surplus_time' => $surplus_time]);
+        } else { // 暂停或下次再做
+            DB::table('doings')->where('user_id', Auth::user()->id)->where('paper_id', $paper_id)->update(['status' => 1, 'oprated_at' => $oprated_at, 'surplus_time' => $surplus_time]);
+        }
     }
 
     // 暂停、下次再做、交卷
 
     /**
      * @param $id 试卷表 id
-     * @param $type 暂停「now」 交卷「end」 下次再做「next」
+     * @param $type 暂停「now」 交卷「end」 下次再做「next」 继续「continue」
      * @param Request $request
+     *      * 隐藏表单 doing_id
      */
-    public function opPaper($id, $type, Request $request)
+    public function opPaper(Request $request)
     {
-        $all_topic = $this->subpaperRepository->getPaperId($id);
         $data = $request->all();
         $doing_id = $data['doing_id'];
+        $id = $data['id'];
+        $type = $data['type'];
         $data = $data['topic'];
+
+        $all_topic = $this->subpaperRepository->getPaperId($id);
 
         // 取出所有题目，将没做的题目的 answer 置为空「null」
         foreach ($all_topic as $v) {
@@ -231,19 +267,44 @@ class TopicsController extends Controller
             }
         }
 
-        $addData = $this->statistics($data,$id);
+        $addData = $this->statistics($data, $id);
 
         // 判断是否做过了
-        $num = DB::table('danswers')->where('doing_id' , $doing_id)->count();
+        $num = DB::table('danswers')->where('doing_id', $doing_id)->count();
 
-        if($num > 0) { // 已经保存过一次了「可能是暂停过」，更新
-            foreach($addData as $k => $v) {
+        if ($num > 0) { // 已经保存过一次了「可能是暂停过」，更新
+            foreach ($addData as $k => $v) {
                 DB::table('danswers')->where('doing_id', $doing_id)->where('topic_id', $v['topic_id'])->update($v);
             }
 
         } else { //第一次保存答案，新增
             $this->danswerRepository->insert($addData);
         }
+
+
+        $doing = $this->doingRepository->getById($doing_id);
+        $time = time();
+        $surplus_time = $doing->surplus_time - ($time - $doing->oprated_at);
+
+        if ($type == 'end') {
+            if($surplus_time <1) {
+                $surplus_time = 1;
+            }
+            $this->needAutoComplete($id, $type, $time, $surplus_time);
+            return redirect()->route('dashboard.paper')->with('error', '交卷成功');
+        } elseif($type == 'continue') {
+            $this->needAutoComplete($id, $type, $time, $surplus_time);
+            return redirect()->route('paper.do', ['id' => $id])->with('error', '考试继续，开始计时');
+        } else {
+            if ($surplus_time < 10 * 60) {
+                return redirect()->back()->with('error', '离交卷时间不到 10 分钟。不允许暂停');
+            } else {
+
+                $this->needAutoComplete($id, $type, $time, $surplus_time);
+                return redirect()->route('dashboard.paper')->with('error', '考试暂停，停止计时');
+            }
+        }
+
     }
 
     /**
@@ -264,9 +325,9 @@ class TopicsController extends Controller
             $subpaper = DB::table('subpapers')->where('topic_id', $k)->first(); //试卷中的题目详情
 
             $arr[$k]['true_answer'] = $topicInfo['answer'];
-            $arr[$k]['topic_type'] =$topicInfo['type'];
+            $arr[$k]['topic_type'] = $topicInfo['type'];
             $arr[$k]['value'] = $subpaper->value;
-            $arr[$k]['unchecked'] =$subpaper->unchecked;
+            $arr[$k]['unchecked'] = $subpaper->unchecked;
 
         }
         return $arr;
