@@ -9,6 +9,7 @@
     <div class="frame_left col-xs-10">
         <div class="row">
             <div class="col-xs-12 pt20">
+                <h1 class="text-center alert-warning">{{ session('error') }}</h1>
                 <table class="table table-striped bb">
                     <thead>
                     <tr>
@@ -38,7 +39,10 @@
                         </td>
                         <td>{{ $v->limit_time }} 分钟</td>
                         <td>{{ $v->updated_at }}</td>
-                        <td><a href="{{ route('paper.sh', ['id' => $v->id]) }}" class="btn btn-default">试卷预览</a></td>
+                        <td>
+                            <a href="{{ route('paper.sh', ['id' => $v->id]) }}" class="btn btn-default">试卷预览</a>
+                            <a href="{{ route('paper.do', ['id' => $v->id]) }}" class="btn btn-default">开始考试</a>
+                        </td>
                     </tr>
                     @empty
                         <tr>

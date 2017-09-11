@@ -16,6 +16,11 @@ trait BaseRepository
         return $this->save($this->model, $input);
     }
 
+    public function model()
+    {
+        return $this->model();
+    }
+
     public function insert($data)
     {
         return $this->model->insert($data);
