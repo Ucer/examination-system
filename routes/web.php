@@ -32,4 +32,10 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'middleware' 
     Route::get('paper/create', 'TopicsController@createP')->name('paper.c');
     Route::post('paper/store', 'TopicsController@storeP')->name('paper.s');
     Route::get('paper/{id}/show', 'TopicsController@showP')->name('paper.sh');
+    Route::get('paper/{id}/do', 'TopicsController@doPaper')->name('paper.do');
+    Route::post('paper/{id}/{type}', 'TopicsController@opPaper')->name('paper.stop');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
